@@ -1,6 +1,13 @@
 import express from "express";
 import passport from "passport";
-import { getAdminStats, getAdminUsers, logout, myProfile } from "../controllers/user.js";
+import {
+  getAdminStats,
+  getAdminUsers,
+  loginController,
+  logout,
+  myProfile,
+  registerController,
+} from "../controllers/user.js";
 import { authorizeAdmin, isAuthenticated } from "../middlewares/auth.js";
 
 const router = express.Router();
@@ -12,16 +19,15 @@ router.get(
   })
 );
 
-router.get(
-  "/login",
-  passport.authenticate("google", {
-    successRedirect: process.env.FRONTEND_URL,
-  })
-);
+// router.get(
+//   "/login",
+//   passport.authenticate("google", {
+//     successRedirect: process.env.FRONTEND_URL,
+//   })
+// );
 
-// router.get("/login", passport.authenticate("google"), (req, res, next) => {
-//   res.send("Logged In");
-// });
+router.post("/login", loginController);
+router.post("/register", registerController);
 
 router.get("/me", isAuthenticated, myProfile);
 
